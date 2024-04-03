@@ -3,6 +3,7 @@ import DashboardNav from "../components/DashboardNav";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "../db/database";
+import { stripe } from "../stripe/stripe";
 
 async function getData({
   email,
@@ -36,6 +37,17 @@ async function getData({
       },
     });
   }
+  if (!user?.stripeCustomerId) {
+    const data = await stripe.customers.create({ email: email });
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        stripeCustomerId: data.id,
+      },
+    });
+  }
 }
 
 export default async function DashboardLayout({
@@ -54,8 +66,8 @@ export default async function DashboardLayout({
     firstname: user.given_name as string,
     id: user.id as string,
     lastname: user.family_name as string,
-    profileImg: user.picture
-  })
+    profileImg: user.picture,
+  });
   return (
     <div className="fle flex-col space-y-6 mt-10">
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">

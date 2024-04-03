@@ -21,3 +21,22 @@ export default function LoadingButton() {
     </div>
   );
 }
+
+export function StripeSubscriptionButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <div>
+      {pending ? (
+        <Button disabled className="w-full">
+          {" "}
+          <Loader className="mr-2 w-4 h-4 animate-spin" /> Please wait...
+        </Button>
+      ) : (
+        <Button type="submit" className="w-full">
+          Create subscription
+        </Button>
+      )}
+    </div>
+  );
+}
