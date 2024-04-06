@@ -35,7 +35,7 @@ export default function UserNav({
         <Button variant={"ghost"} className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w10 rounded-full">
             <AvatarImage src={image} alt="" />
-            <AvatarFallback>Ro</AvatarFallback>
+            <AvatarFallback>{name}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
